@@ -225,7 +225,8 @@
 
     if (cancelled()) return null
     if (zeroEpisode && result.length === alEpisodes.length) result = result.slice(0, -1)
-    if (media?.bannerImage && result?.some(episode => episode?.image)) result = result.map(episode => episode?.image ? episode : { ...episode, image: media?.bannerImage })
+    const bannerImage = media?.bannerImage || media?.coverImage?.extraLarge || mappings?.images?.find(image => image.coverType === 'Fanart')?.url || mappings?.images?.find(image => image.coverType === 'Poster')?.url || mappings?.images?.find(image => image.coverType === 'Banner')?.url || mappings?.images?.find(image => image.coverType === 'Clearlogo')?.url
+    if (bannerImage && result?.some(episode => episode?.image)) result = result.map(episode => episode?.image ? episode : { ...episode, image: bannerImage })
     // eslint-disable-next-line svelte/infinite-reactive-loop
     currentEpisodes = result?.slice(0, maxEpisodes)
     // eslint-disable-next-line svelte/infinite-reactive-loop

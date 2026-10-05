@@ -55,10 +55,11 @@
     <div class='ratio-16-9 w-full h-full clip-0'>
       <SmartImage class='img-cover w-full h-full' images={[media.bannerImage, ...(media.trailer?.id ? [`https://i.ytimg.com/vi/${media.trailer.id}/maxresdefault.jpg`, `https://i.ytimg.com/vi/${media.trailer.id}/hqdefault.jpg`] : []), media.coverImage?.extraLarge, './no_image_episode.jpg' ]}/>
       {#await (media.trailer?.id && media) || episodesList.getMedia(media.idMal) then trailer}
-        {#if trailer?.trailer?.id || trailer?.data?.trailer?.youtube_id }
+        {@const trailerId = trailer?.trailer?.id || trailer?.data?.trailer?.youtube_id}
+        {#if trailerId }
           {#await ELECTRON.getYouTube() then youtubeServer}
             <div style='transition: opacity .3s' class:transparent={hide}>
-              <SmartImage class='position-absolute top-0 left-0 w-full h-full img-cover blur-6' images={[`https://i.ytimg.com/vi/${media.trailer.id}/maxresdefault.jpg`, `https://i.ytimg.com/vi/${media.trailer.id}/hqdefault.jpg`]}/>
+              <SmartImage class='position-absolute top-0 left-0 w-full h-full img-cover blur-6' images={[`https://i.ytimg.com/vi/${trailerId}/maxresdefault.jpg`, `https://i.ytimg.com/vi/${trailerId}/hqdefault.jpg`]}/>
               <button type='button' class='position-absolute z-10 top-0 right-0 m-15 btn-square bg-transparent shadow-none border-0 rounded pointer mute' style='filter: drop-shadow(0 0 .4rem hsla(var(--black-color-hsl), 1))' use:click={toggleMute}>
                 {#if muted}
                   <VolumeX size='2.2rem' fill='currentColor'/>
@@ -75,7 +76,7 @@
                   allowfullscreen
                   on:load={() => { setTimeout(() => (hide = false), 300).unref?.() }}
                   referrerpolicy='strict-origin-when-cross-origin'
-                  src={`${youtubeServer}/embed/${trailer?.trailer?.id || trailer?.data?.trailer?.youtube_id}?autoplay=1&controls=0&mute=${muted ? 1 : 0}&disablekb=1&loop=1&vq=medium&playlist=${trailer?.trailer?.id || trailer?.data?.trailer?.youtube_id}&cc_lang_pref=ja`}
+                  src={`${youtubeServer}/embed/${trailerId}?autoplay=1&controls=0&mute=${muted ? 1 : 0}&disablekb=1&loop=1&vq=medium&playlist=${trailerId}&cc_lang_pref=ja`}
               />
             </div>
           {/await}
