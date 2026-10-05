@@ -115,7 +115,7 @@
         })
     }
 
-    function getDisplayedSections(searchInput) {
+    function getDisplayedSections(searchInput, value, altValue) {
         const sections = headerSections.length ? headerSections : [{ header: null, start: 0, end: getOptions()?.length || 1 }]
         let displayedOptions = 0
         return sections.map(({ header, start, end }) => {
@@ -153,10 +153,10 @@
     {#if $dropdown}
         {@const searchInput = searchTextInput ? searchTextInput.toLowerCase() : null}
         <div class='custom-dropdown-menu position-absolute mh-300 overflow-y-auto w-full bg-dark custom-menu-{id}'>
-            {#each getDisplayedSections(searchInput) as { header, start, options } (start)}
+            {#each getDisplayedSections(searchInput, value, altValue) as { header, start, options } (start)}
                 {#if options.length > 0}
                     {#if header}<span class='not-reactive font-weight-bold p-5'>{header}</span>{/if}
-                    {#each options as option, optionIndex (optionIndex)}
+                    {#each options as option (option)}
                         <div role='button' tabindex='0' class='custom-dropdown-item {!headers ? `text-center` : `pl-20`} not-reactive pointer custom-menu-{id}' class:custom-dropdown-item-selected={includes(value, option)} class:custom-dropdown-item-alt-selected={includes(altValue, option)}
                              use:click={() => {
                                  if (includes(value, option)) value = arrayValue ? value.filter(item => item !== option) : null
@@ -202,10 +202,10 @@
         z-index: 15;
     }
     @media (hover: hover) and (pointer: fine) {
-      .custom-dropdown-item:hover {
-        background-color: var(--tertiary-color-very-light);
-        color: var(--black-color);
-      }
+        .custom-dropdown-item:hover {
+            background-color: var(--tertiary-color-very-light);
+            color: var(--black-color);
+        }
     }
     .custom-dropdown-item-selected {
         background-color: var(--tertiary-color);
