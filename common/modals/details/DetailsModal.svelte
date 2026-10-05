@@ -80,7 +80,8 @@
   }
   $: playButtonText = getPlayButtonText(media)
   function toggleFavourite () {
-    Object.assign(media, { isFavourite: anilistClient.favourite({ id: media.id, isFavourite: !media.isFavourite }) })
+    // eslint-disable-next-line svelte/no-reactive-reassign
+    media.isFavourite = anilistClient.favourite({ id: media.id, isFavourite: !media.isFavourite })
   }
 
   function sanitize(body) {
